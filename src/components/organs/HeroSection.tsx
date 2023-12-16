@@ -1,10 +1,8 @@
 import { Image } from "../atoms/Image"
-import bgImage from "../../assets/hero-bg.jpg"
 import heroImage from "../../assets/heroimg.jpg"
 import { Text } from "../atoms/Text"
 import { HeroTexts } from "../particles/DataLists"
 import { Button } from "../atoms/Button"
-import { Play } from "@phosphor-icons/react"
 import { Fade, Slide } from "react-awesome-reveal"
 
 

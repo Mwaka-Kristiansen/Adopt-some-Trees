@@ -4,12 +4,6 @@ import { Text } from "../atoms/Text";
 import { FooterTexts } from "../particles/DataLists";
 import { List } from "../atoms/List";
 import { Link } from "react-router-dom";
-import {
-  FacebookLogo,
-  InstagramLogo,
-  TwitterLogo,
-} from "@phosphor-icons/react";
-import app from "../../assets/appdownload.png";
 
 const Footer = () => {
   return (

@@ -16,13 +16,13 @@ import Tree11 from "../../assets/Red-Stinkwood.jpeg";
 import Tree12 from "../../assets/Yellowwood.jpeg";
 import { Button } from "../atoms/Button";
 import PaymentModal from "../organs/Payment";
-import { Tree } from "@phosphor-icons/react";
 
 const Trees = () => {
   const [isPaymentModalOpen, setPaymentModalOpen] = useState(false);
   const [selectedTree, setSelectedTree] = useState(null);
 
   const openPaymentModal = (tree: React.SetStateAction<null>) => {
+    selectedTree &&
     setSelectedTree(tree);
     setPaymentModalOpen(true);
   };

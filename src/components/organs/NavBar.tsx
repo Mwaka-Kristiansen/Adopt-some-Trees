@@ -5,7 +5,7 @@ import Logo from "../../assets/tree-logo.png"
 import { NavButtons, NavLinks } from "../particles/DataLists"
 import { List } from "../atoms/List";
 import { NavLink, useNavigate } from "react-router-dom";
-import { ArrowCircleRight, CirclesFour } from "@phosphor-icons/react";
+import { ArrowCircleRight } from "@phosphor-icons/react";
 import { Slide } from "react-awesome-reveal";
 
 

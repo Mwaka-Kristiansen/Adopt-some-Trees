@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
@@ -63,6 +63,10 @@ const Map = () => {
             </div>`
           )
           .addTo(map);
+          popup.on("close", () => {
+            popup.remove();
+          }
+        );
 
         // Handle click event for the "Buy Tree" button
         document.getElementById("buyTreeBtn")?.addEventListener("click", () => {
