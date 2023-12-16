@@ -81,6 +81,13 @@ const Map = () => {
         );
 
         // Handle click event for the "Buy Tree" button
+        const buyTreeBtn = document.getElementById("buyTreeBtn");
+        if(buyTreeBtn) {
+          buyTreeBtn.addEventListener("click", () => {
+            // Redirect to another page using navigate
+            handleClick();
+          });
+        }
        
       }
     });

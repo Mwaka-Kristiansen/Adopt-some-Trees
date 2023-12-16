@@ -4,15 +4,15 @@ import { Text } from "../atoms/Text"
 import { HeroTexts } from "../particles/DataLists"
 import { Button } from "../atoms/Button"
 import { Fade, Slide } from "react-awesome-reveal"
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 const HeroSection = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleClick = () => {
-    // Redirect to another page using navigate
-    navigate("/adopt-a-tree");
+    // Redirect to another page using Link
+    <Link to="/buy-a-tree" />
   };
     return (
       <section className="w-full lg:h-screen md:h-[550px] h-[830px] relative overflow-x-hidden flex justify-end">
@@ -38,17 +38,15 @@ const HeroSection = () => {
               <Fade>{HeroTexts.thirdText}</Fade>
             </Text>
             <div className="w-full flex md:justify-start justify-between items-center lg:gap-12 md:gap-6 gap-0">
+              <Link to="/buy-a-tree">
               <Button
                 type="button"
                 className="outline-none border-none lg:px-7 px-5 py-3 bg-green-700 text-white font-extralight rounded-lg"
                 id='hero-button'
-                onClick={() => {
-                  // Redirect to another page dont use window.location.href
-                  handleClick();
-                }}
-              >
+                >
                 {HeroTexts.firstButton}
               </Button>
+              </Link>
               {/* <div className="flex items-center lg:gap-6 gap-3 cursor-pointer">
                             <Text as="span" className="relative flex h-14 w-14">
                                 <Text as="span" className="animate-ping absolute inline-flex h-full w-full rounded-full bg-color1 opacity-75"></Text>

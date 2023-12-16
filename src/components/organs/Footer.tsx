@@ -33,9 +33,6 @@ const Footer = () => {
             ))}
           </ul>
         </div>
-
-       ÷
-
         {/* <div className="flex flex-col lg:items-center gap-4 md:mt-8">
           <Text className="text-xl text-color3" as="h2">
             {FooterTexts.more.caption}
