@@ -4,9 +4,16 @@ import { Text } from "../atoms/Text"
 import { HeroTexts } from "../particles/DataLists"
 import { Button } from "../atoms/Button"
 import { Fade, Slide } from "react-awesome-reveal"
+import { useNavigate } from "react-router-dom";
 
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    // Redirect to another page using navigate
+    navigate("/adopt-a-tree");
+  };
     return (
       <section className="w-full lg:h-screen md:h-[550px] h-[830px] relative overflow-x-hidden flex justify-end">
         {/* <Image className="h-[60%] w-[80%] lg:h-[90vh] md:h-[50vh] lg:w-1/2 md:w-[55%]" image={bgImage} alt="Hero Background Vector" /> */}
@@ -36,8 +43,8 @@ const HeroSection = () => {
                 className="outline-none border-none lg:px-7 px-5 py-3 bg-green-700 text-white font-extralight rounded-lg"
                 id='hero-button'
                 onClick={() => {
-                  // Redirect to another page
-                  window.location.href = "/adopt-a-tree";
+                  // Redirect to another page dont use window.location.href
+                  handleClick();
                 }}
               >
                 {HeroTexts.firstButton}

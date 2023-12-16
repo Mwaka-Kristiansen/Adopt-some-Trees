@@ -4,8 +4,16 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "../../assets/style/Map.css";
+import { useNavigate } from "react-router-dom";
+
 
 const Map = () => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    // Redirect to another page using navigate
+    navigate("/buy-a-tree");
+  };
   useEffect(() => {
     mapboxgl.accessToken =
       "pk.eyJ1IjoidGVreXJleSIsImEiOiJja3NieGJqMHYwYmFoMndwZmN1b3l1N3g2In0.n0e_g3FQlcLUiuiwnDL9fw";
@@ -59,7 +67,11 @@ const Map = () => {
           .setHTML(
             `<div>
               <p>Plant a tree here!</p>
-              <button id="buyTreeBtn" style="background-color: #4CAF50; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">Buy Tree</button>
+              <button 
+              id="buyTreeBtn" 
+              style="background-color: #4CAF50; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;"
+              onclick={handleClick()}
+              >Buy Tree</button>
             </div>`
           )
           .addTo(map);
@@ -69,10 +81,7 @@ const Map = () => {
         );
 
         // Handle click event for the "Buy Tree" button
-        document.getElementById("buyTreeBtn")?.addEventListener("click", () => {
-          // Navigate to the hotels page (replace with your actual navigation logic)
-          window.location.href = "/buy-a-tree";
-        });
+       
       }
     });
 
