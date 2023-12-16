@@ -4,8 +4,8 @@ import { Text } from '../atoms/Text'
 import { BookingStepsTexts } from '../particles/DataLists'
 import { AirplaneInFlight, AirplaneTilt, Buildings, MapTrifold, Receipt, Wallet, Tree, TreePalm, TreeEvergreen, TreeStructure } from '@phosphor-icons/react'
 import { Card } from '../molecules/Card'
-import CardImage1 from "../../assets/bookingImage1.jpeg"
-import CardImage2 from "../../assets/bookingImage2.jpeg"
+import CardImage1 from "../../assets/herov.jpg"
+// import CardImage2 from "../../assets/bookingImage2.jpeg"
 
 const BookingSteps = () => {
 
@@ -61,24 +61,24 @@ const BookingSteps = () => {
                         </Text>
                         <div className='flex items-center gap-6'>
                             <Text as='span' className='text-color3 font-light bg-color3/5 p-2.5 rounded-full'>
-                                <Receipt size={18} color="currentColor" weight="light" />
+                                <Tree size={18} color="currentColor" weight="light" />
                             </Text>
                             <Text as='span' className='text-color3 font-light bg-color3/5 p-2.5 rounded-full'>
-                                <MapTrifold size={18} color="currentColor" weight="light" />
+                                <TreeEvergreen size={18} color="currentColor" weight="light" />
                             </Text>
 
                             <Text as='span' className='text-color3 font-light bg-color3/5 p-2.5 rounded-full'>
-                                <AirplaneTilt size={18} color="currentColor" weight="light" />
+                                <TreePalm size={18} color="currentColor" weight="light" />
                             </Text>
                         </div>
                         <Text as='p' className='text-sm font-light text-color3 flex items-center gap-3'>
-                            <Buildings size={18} color="currentColor" weight="light" />
+                            <TreeEvergreen size={18} color="currentColor" weight="light" />
                             {BookingStepsTexts.cardOne.people}
                         </Text>
                     </Card>
 
                     {/* Second Absolute Card  */}
-                    <Card cardClass='flex gap-3 justify-start items-start absolute lg:right-0 -right-4 bottom-10 bg-white py-3 px-4 border-2 border-color3/5 shadow-md rounded-xl' imageAlt={BookingStepsTexts.cardTwo.destination} imageSrc={CardImage2} cover='object-cover object-top' imageWrapperClass='h-16 w-16 rounded-full overflow-hidden' textWrapperClass='flex flex-col gap-2'>
+                    <Card cardClass='flex gap-3 justify-start items-start absolute lg:right-0 -right-4 bottom-10 bg-white py-3 px-4 border-2 border-color3/5 shadow-md rounded-xl' imageAlt={BookingStepsTexts.cardTwo.destination} imageSrc={CardImage1} cover='object-cover object-top' imageWrapperClass='h-16 w-16 rounded-full overflow-hidden' textWrapperClass='flex flex-col gap-2'>
                         <Text as='p' className='text-xs font-light text-color3'>
                             {BookingStepsTexts.cardTwo.status}
                         </Text>

@@ -1,6 +1,6 @@
 import { Image } from "../atoms/Image"
 import bgImage from "../../assets/hero-bg.jpg"
-import heroImage from "../../assets/herov.jpg"
+import heroImage from "../../assets/heroimg.jpg"
 import { Text } from "../atoms/Text"
 import { HeroTexts } from "../particles/DataLists"
 import { Button } from "../atoms/Button"
@@ -36,6 +36,11 @@ const HeroSection = () => {
               <Button
                 type="button"
                 className="outline-none border-none lg:px-7 px-5 py-3 bg-green-700 text-white font-extralight rounded-lg"
+                id='hero-button'
+                onClick={() => {
+                  // Redirect to another page
+                  window.location.href = "/adopt-a-tree";
+                }}
               >
                 {HeroTexts.firstButton}
               </Button>

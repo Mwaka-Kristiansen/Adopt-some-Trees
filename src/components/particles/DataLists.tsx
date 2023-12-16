@@ -30,10 +30,10 @@ export const NavButtons = [
 
 export const HeroTexts = {
   firstText: "ADOPT, BUY, PLANT TREES IN KENYA",
-  secondText: "Make a difference in the environment and your community.",
+  secondText: "Make a difference for the environment and your community.",
   thirdText:
     "Join us in our mission to promote sustainable living and preserve the natural beauty of Kenya. Adopt a tree, buy a tree, and contribute to a greener future.",
-  firstButton: "Learn More",
+  firstButton: "Adopt a Tree",
   secondButton: "Get Started",
 };
 
@@ -171,55 +171,55 @@ export const FooterTexts = {
         url: "/buy-a-tree",
       },
       {
-        name: "Planting Guidelines",
-        url: "/planting-guidelines",
+        name: "Buy Trees",
+        url: "/buy-a-tree",
       },
-      {
-        name: "Login",
-        url: "/login",
-      },
-      {
-        name: "Signup",
-        url: "/signup",
-      },
+      // {
+      //   name: "Login",
+      //   url: "/login",
+      // },
+      // {
+      //   name: "Signup",
+      //   url: "/signup",
+      // },
     ],
   },
-  contacts: {
-    caption: "Contacts",
-    links: [
-      {
-        name: "FAQs",
-        url: "/faqs",
-      },
-      {
-        name: "Help",
-        url: "/help",
-      },
-      {
-        name: "Policies",
-        url: "/policies",
-      },
-      {
-        name: "Terms & Conditions",
-        url: "/terms-and-conditions",
-      },
-    ],
-  },
-  more: {
-    caption: "More",
-    links: [
-      {
-        name: "Our Mission",
-        url: "/our-mission",
-      },
-      {
-        name: "Environmental Initiatives",
-        url: "/environmental-initiatives",
-      },
-      {
-        name: "Contact Us",
-        url: "/contact-us",
-      },
-    ],
-  },
+  // contacts: {
+  //   caption: "Contacts",
+  //   links: [
+  //     {
+  //       name: "FAQs",
+  //       url: "/faqs",
+  //     },
+  //     {
+  //       name: "Help",
+  //       url: "/help",
+  //     },
+  //     {
+  //       name: "Policies",
+  //       url: "/policies",
+  //     },
+  //     {
+  //       name: "Terms & Conditions",
+  //       url: "/terms-and-conditions",
+  //     },
+  //   ],
+  // },
+  // more: {
+  //   caption: "More",
+  //   links: [
+  //     {
+  //       name: "Our Mission",
+  //       url: "/our-mission",
+  //     },
+  //     {
+  //       name: "Environmental Initiatives",
+  //       url: "/environmental-initiatives",
+  //     },
+  //     {
+  //       name: "Contact Us",
+  //       url: "/contact-us",
+  //     },
+  //   ],
+  // },
 };

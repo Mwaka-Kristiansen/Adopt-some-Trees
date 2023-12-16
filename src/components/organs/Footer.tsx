@@ -1,5 +1,5 @@
 import { Image } from "../atoms/Image";
-import logo from "../../assets/logo2.png";
+import logo from "../../assets/tree-logo.png";
 import { Text } from "../atoms/Text";
 import { FooterTexts } from "../particles/DataLists";
 import { List } from "../atoms/List";
@@ -40,25 +40,9 @@ const Footer = () => {
           </ul>
         </div>
 
-        <div className="flex flex-col md:items-center gap-4 md:mt-8">
-          <Text className="text-xl text-color3" as="h2">
-            {FooterTexts.contacts.caption}
-          </Text>
-          <ul className="flex flex-col md:ml-12 gap-2">
-            {FooterTexts.contacts.links.map((link, index) => (
-              <List key={index} className="text-sm">
-                <Link
-                  to={link.url}
-                  className="text-color4 transition-all duration-300 hover:underline"
-                >
-                  {link.name}
-                </Link>
-              </List>
-            ))}
-          </ul>
-        </div>
+       ÷
 
-        <div className="flex flex-col lg:items-center gap-4 md:mt-8">
+        {/* <div className="flex flex-col lg:items-center gap-4 md:mt-8">
           <Text className="text-xl text-color3" as="h2">
             {FooterTexts.more.caption}
           </Text>
@@ -74,9 +58,9 @@ const Footer = () => {
               </List>
             ))}
           </ul>
-        </div>
+        </div> */}
 
-        <div className="flex flex-col lg:items-center w-full md:mt-8 gap-4">
+        {/* <div className="flex flex-col lg:items-center w-full md:mt-8 gap-4">
           <ul className="w-full flex items-center lg:justify-center gap-4">
             <List>
               <Link
@@ -114,10 +98,10 @@ const Footer = () => {
             as="a"
             href="/"
           />
-        </div>
+        </div> */}
       </section>
       <Text className="text-center bg-color4 text-white text-xs py-6 font-light">
-        Copyright 2023. Adopt a Tree.com. All rights reserved.
+        Copyright 2023. adoptatree.com. All rights reserved.
       </Text>
     </footer>
   );
