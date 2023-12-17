@@ -1,11 +1,14 @@
+import React from 'react';
+import Orders from '../atoms/Table';
+// import only datatable css from react bootstrap
+// import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+// import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 
-import  TreeOrders  from "../organs/TreeOrders";
-
-const PlantTree = () => {
+const PlantTree: React.FC = () => {
   return (
-    <div className="pt-8 mt-8 container">
-      <TreeOrders />
-    </div>
+   <>
+   <Orders/>
+   </>
   );
 };
 

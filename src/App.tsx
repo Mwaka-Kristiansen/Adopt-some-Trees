@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 //importing react slick slider
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 
 import { animateScroll } from "react-scroll";
 
