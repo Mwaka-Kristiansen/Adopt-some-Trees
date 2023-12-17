@@ -15,21 +15,47 @@ import Tree10 from "../../assets/floweringtree.jpeg";
 import Tree11 from "../../assets/Red-Stinkwood.jpeg";
 import Tree12 from "../../assets/Yellowwood.jpeg";
 import { Button } from "../atoms/Button";
-import PaymentModal from "../organs/Payment";
+// import PaymentModal from "../organs/Payment";
+import { Link, useNavigate } from "react-router-dom";
 
 const Trees = () => {
-  const [isPaymentModalOpen, setPaymentModalOpen] = useState(false);
-  const [selectedTree, setSelectedTree] = useState(null);
+    const [isPaymentModalOpen, setPaymentModalOpen] = useState(false);
+    const [selectedTree, setSelectedTree] = useState(null);
+    const [clickedCoordinates, setClickedCoordinates] = useState(null);
 
-  const openPaymentModal = (tree: React.SetStateAction<null>) => {
-    selectedTree &&
-    setSelectedTree(tree);
-    setPaymentModalOpen(true);
-  };
+    const navigate = useNavigate();
 
-  const closePaymentModal = () => {
-    setPaymentModalOpen(false);
-  };
+  // const openPaymentModal = (tree: React.SetStateAction<null>) => {
+  //   selectedTree &&
+  //   setSelectedTree(tree);
+  //   setPaymentModalOpen(true);
+  // };
+
+  // const closePaymentModal = () => {
+  //   setPaymentModalOpen(false);
+  // };
+
+const handleBuyTree = (price: any) => {
+  if (clickedCoordinates) {
+    // Access the coordinates from the state
+    const latitude = clickedCoordinates[1];
+    const longitude = clickedCoordinates[0];
+
+    // Use Link to navigate
+    return (
+      <Link
+        to={`/plant-a-tree?xlat=${latitude}&ylon=${longitude}&price=${price}`}
+      >
+        <Button className="text-color3 bg-green-500 px-6 py-1 rounded-full">
+          Buy Tree
+        </Button>
+      </Link>
+    );
+  }
+
+  // Handle the case where coordinates are not available
+  return null;
+};
 
   const firstLineDestinations = [
     { tree: "Moringa Tree", price: "Ksh500", image: Tree1 },
@@ -42,14 +68,14 @@ const Trees = () => {
     { tree: "Croton Megalocarpus Tree", price: "Ksh200", image: Tree6 },
   ];
   const thirdLineDestinations = [
-    { tree: "Erthyrina Burtii Tree", price: "$2000", image: Tree7 },
+    { tree: "Erthyrina Burtii Tree", price: "$Ksh200", image: Tree7 },
     { tree: "Syzygium Guineense Tree", price: "Ksh800", image: Tree8 },
     { tree: "Fever Tree", price: "Ksh800", image: Tree9 },
   ];
   const fourthLineDestinations = [
     { tree: "Flowering Tree", price: "Ksh600", image: Tree10 },
     { tree: "Red Stinkwood Tree", price: "Ksh600", image: Tree11 },
-    { tree: "Yellow Wood Tree", price: "$2200", image: Tree12 },
+    { tree: "Yellow Wood Tree", price: "Ksh200", image: Tree12 },
   ];
 
   const renderDestinationLine = (destinations: any[]) => (
@@ -73,12 +99,9 @@ const Trees = () => {
               </Text>
             </div>
             <div className="w-full flex items-center text-color3">
-              <Button
-                className="text-color3 bg-green-500 px-6 py-1 rounded-full"
-                onClick={() => openPaymentModal(card)}
-              >
-                Buy Tree
-              </Button>
+              <div className="w-full flex items-center text-color3">
+                {handleBuyTree(card.price)}
+              </div>
             </div>
           </Card>
         </div>
@@ -107,7 +130,7 @@ const Trees = () => {
       {renderDestinationLine(fourthLineDestinations)}
 
       {/* Render the PaymentModal */}
-      <PaymentModal isOpen={isPaymentModalOpen} onClose={closePaymentModal} />
+      {/* <PaymentModal isOpen={isPaymentModalOpen} onClose={closePaymentModal} /> */}
     </section>
   );
 };

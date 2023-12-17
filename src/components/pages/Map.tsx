@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const Map = () => {
   const navigate = useNavigate();
-
+  const [clickedCoordinates, setClickedCoordinates] = useState(null);
   useEffect(() => {
     mapboxgl.accessToken =
       "pk.eyJ1IjoidGVreXJleSIsImEiOiJja3NieGJqMHYwYmFoMndwZmN1b3l1N3g2In0.n0e_g3FQlcLUiuiwnDL9fw";
@@ -57,31 +57,30 @@ const Map = () => {
       const coordinates = e.lngLat.toArray();
 
       if (features.length === 0) {
+        setClickedCoordinates(clickedCoordinates);
+
         const popup = new mapboxgl.Popup();
-         popup .setLngLat([coordinates[0], coordinates[1]])
+        popup
+          .setLngLat([coordinates[0], coordinates[1]])
           .setHTML(
             `<div>
               <p>Plant a tree here!</p>
               <button 
-                id="buyTreeBtn" 
+                id="buyTreeBtn"
                 style="background-color: #4CAF50; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;"
               >Buy Tree</button>
             </div>`
           )
           .addTo(map);
-          
-
-        // popup.on("close", () => {
-        //   popup.remove();
-        // });
 
         // Handle click event for the "Buy Tree" button
         document.getElementById("buyTreeBtn")?.addEventListener("click", () => {
-          // Redirect to another page using navigate
-          navigate("/buy-a-tree");
+          // Redirect to another page using navigate with query parameters
+          navigate(`/buy-a-tree?xlat=${coordinates[1]}&ylon=${coordinates[0]}`);
         });
       }
     });
+
 
     map.on("load", () => {
       map.addSource("counties", {
@@ -129,7 +128,7 @@ const Map = () => {
 
     // Cleanup on unmount
     return () => map.remove();
-  }, [navigate]);
+  }, [navigate, clickedCoordinates]);
 
   return <div id="map"></div>;
 };
