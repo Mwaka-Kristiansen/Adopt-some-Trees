@@ -33,7 +33,7 @@ const HeroSection = () => {
               <Fade>{HeroTexts.thirdText}</Fade>
             </Text>
             <div className="w-full flex md:justify-start justify-between items-center lg:gap-12 md:gap-6 gap-0">
-              <Link to="/buy-a-tree">
+              <Link to="/adopt-a-tree">
               <Button
                 type="button"
                 className="outline-none border-none lg:px-7 px-5 py-3 bg-green-700 text-white font-extralight rounded-lg"

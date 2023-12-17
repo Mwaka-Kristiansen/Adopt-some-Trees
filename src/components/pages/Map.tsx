@@ -6,14 +6,9 @@ import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "../../assets/style/Map.css";
 import { useNavigate } from "react-router-dom";
 
-
 const Map = () => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    // Redirect to another page using navigate
-    navigate("/buy-a-tree");
-  };
   useEffect(() => {
     mapboxgl.accessToken =
       "pk.eyJ1IjoidGVreXJleSIsImEiOiJja3NieGJqMHYwYmFoMndwZmN1b3l1N3g2In0.n0e_g3FQlcLUiuiwnDL9fw";
@@ -62,33 +57,29 @@ const Map = () => {
       const coordinates = e.lngLat.toArray();
 
       if (features.length === 0) {
-        const popup = new mapboxgl.Popup()
-          .setLngLat([coordinates[0], coordinates[1]])
+        const popup = new mapboxgl.Popup();
+         popup .setLngLat([coordinates[0], coordinates[1]])
           .setHTML(
             `<div>
               <p>Plant a tree here!</p>
               <button 
-              id="buyTreeBtn" 
-              style="background-color: #4CAF50; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;"
-              onclick={handleClick()}
+                id="buyTreeBtn" 
+                style="background-color: #4CAF50; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;"
               >Buy Tree</button>
             </div>`
           )
           .addTo(map);
-          popup.on("close", () => {
-            popup.remove();
-          }
-        );
+          
+
+        // popup.on("close", () => {
+        //   popup.remove();
+        // });
 
         // Handle click event for the "Buy Tree" button
-        const buyTreeBtn = document.getElementById("buyTreeBtn");
-        if(buyTreeBtn) {
-          buyTreeBtn.addEventListener("click", () => {
-            // Redirect to another page using navigate
-            handleClick();
-          });
-        }
-       
+        document.getElementById("buyTreeBtn")?.addEventListener("click", () => {
+          // Redirect to another page using navigate
+          navigate("/buy-a-tree");
+        });
       }
     });
 
@@ -138,7 +129,7 @@ const Map = () => {
 
     // Cleanup on unmount
     return () => map.remove();
-  }, []);
+  }, [navigate]);
 
   return <div id="map"></div>;
 };

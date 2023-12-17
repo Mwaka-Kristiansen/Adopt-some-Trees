@@ -1,16 +1,17 @@
-interface PopupProps {
-    text: string;
-    buttonText: string;
-    onButtonClick: () => void;
-}
+// TreePopupContent.jsx
+import { Link } from "react-router-dom";
+import mapboxgl from "mapbox-gl";
 
-const Popup: React.FC<PopupProps> = ({ text, buttonText, onButtonClick }) => {
-    return (
-        <div className="popup">
-            <p>{text}</p>
-            <button onClick={onButtonClick}>{buttonText}</button>
-        </div>
-    );
-};
+const TreePopupContent = () => (
+//   create a popup component
+    <div>
+        <p>Plant a tree here!</p>
+        <Link to="/buy-a-tree">
+        <button id="buyTreeBtn">Buy Tree</button>
+        </Link>
+    </div>
+//   add popup component to map
 
-export default Popup;
+);
+
+export default TreePopupContent;
