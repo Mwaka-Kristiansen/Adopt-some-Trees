@@ -19,11 +19,23 @@ import { Button } from "../atoms/Button";
 import { Link, useNavigate } from "react-router-dom";
 
 const Trees = () => {
-    const [isPaymentModalOpen, setPaymentModalOpen] = useState(false);
-    const [selectedTree, setSelectedTree] = useState(null);
-    const [clickedCoordinates, setClickedCoordinates] = useState(null);
+    // const [isPaymentModalOpen, setPaymentModalOpen] = useState(false);
+    // const [selectedTree, setSelectedTree] = useState(null);
 
-    const navigate = useNavigate();
+    // const [clickedCoordinates, setClickedCoordinates] = useState(null);
+
+    // get coordinates from the url
+    // check if the url has coordinates
+  // only split the url if it has coordinates
+  
+    const url = window.location.href;
+    const urlSplit = url.split("?");
+    const urlParams = urlSplit[1].split("&");
+    const urlLat = urlParams[0].split("=");
+    const urlLon = urlParams[1].split("=");
+    
+
+    // const navigate = useNavigate();
 
   // const openPaymentModal = (tree: React.SetStateAction<null>) => {
   //   selectedTree &&
@@ -35,27 +47,27 @@ const Trees = () => {
   //   setPaymentModalOpen(false);
   // };
 
-const handleBuyTree = (price: any) => {
-  if (clickedCoordinates) {
-    // Access the coordinates from the state
-    const latitude = clickedCoordinates[1];
-    const longitude = clickedCoordinates[0];
+// const handleBuyTree = (price: any) => {
+//   if (clickedCoordinates) {
+//     // Access the coordinates from the state
+//     const latitude = clickedCoordinates[1];
+//     const longitude = clickedCoordinates[0];
 
-    // Use Link to navigate
-    return (
-      <Link
-        to={`/plant-a-tree?xlat=${latitude}&ylon=${longitude}&price=${price}`}
-      >
-        <Button className="text-color3 bg-green-500 px-6 py-1 rounded-full">
-          Buy Tree
-        </Button>
-      </Link>
-    );
-  }
+//     // Use Link to navigate
+//     return (
+//       <Link
+//         to={`/plant-a-tree?xlat=${latitude}&ylon=${longitude}&price=${price}`}
+//       >
+//         <Button className="text-color3 bg-green-500 px-6 py-1 rounded-full">
+//           Buy Tree
+//         </Button>
+//       </Link>
+//     );
+//   }
 
-  // Handle the case where coordinates are not available
-  return null;
-};
+//   // Handle the case where coordinates are not available
+//   return null;
+// };
 
   const firstLineDestinations = [
     { tree: "Moringa Tree", price: "Ksh500", image: Tree1 },
@@ -100,13 +112,26 @@ const handleBuyTree = (price: any) => {
             </div>
             <div className="w-full flex items-center text-color3">
               <div className="w-full flex items-center text-color3">
-                {handleBuyTree(card.price)}
+                <Link
+          to={`/plant-a-tree?xlat=${urlLat}&ylon=${urlLon}&price=${card.price}`}
+        >
+                <Button
+                  className="text-color3 bg-green-500 px-6 py-1 rounded-full"
+                  // onClick={() => {
+                  //   // setClickedCoordinates(clickedCoordinates); // Replace with actual coordinates
+                  //   handleBuyTree(card.price);
+                  // }}
+                >
+                  Buy Tree
+                </Button>
+                </Link>
               </div>
             </div>
           </Card>
         </div>
       ))}
     </div>
+    
   );
 
   return (

@@ -5,6 +5,7 @@ import {
   GridRenderCellParams,
   GridTreeNodeWithRender,
 } from "@mui/x-data-grid";
+import { v4 as uuidv4 } from "uuid";
 import { Card, CardContent, Typography, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -107,6 +108,89 @@ const Orders: React.FC = () => {
     }
   };
 
+ const handleAdd = async () => {
+   try {
+     // get data from url
+     const url = window.location.href;
+     const urlSplit = url.split("?");
+     const urlParams = urlSplit[1].split("&");
+     const urlLat = urlParams[0].split("=");
+     const xlat = urlLat[1].split(",");
+     const urlLon = urlParams[1].split("=");
+     const ylon = urlLon[1].split(",");
+     const urlPrice = urlParams[2].split("=");
+     const price = urlPrice[1].split("Ksh");
+
+     const newCoordinates = { x_lat: Number(xlat[1]), y_lon: Number(ylon[1]) };
+
+        // fetch data from the api and check if the coordinates already exist
+        const response = await fetch(
+            "https://i5cvhkou9b.execute-api.af-south-1.amazonaws.com/transactions",
+            {
+                method: "GET",
+                headers: {
+                "Content-Type": "application/json",
+                "Allow-Control-Allow-Origin": "*",
+                },
+            }
+            );
+            const data = await response.json();
+            const coordinates = data.map((row: any) => ({
+                x_lat: row.x_lat,
+                y_lon: row.y_lon,
+            }));
+            const isCoordinatesUnique = coordinates.some(
+                (coordinate: { x_lat: number; y_lon: number; }) =>
+                coordinate.x_lat === newCoordinates.x_lat &&
+                coordinate.y_lon === newCoordinates.y_lon
+            );
+        // Add the data if the coordinates are unique
+        
+
+     if (!isCoordinatesUnique) {
+       const newRow = {
+         buyerId: uuidv4(),
+         price: Number(price[1]),
+         x_lat: Number(xlat[1]),
+         y_lat: Number(ylon[1]),
+         x_lon: Number(xlat[1]),
+         y_lon: Number(ylon[1]),
+         buyerName: "B Sechaba",
+         sellerId: uuidv4(),
+       };
+       await fetch(
+         "https://i5cvhkou9b.execute-api.af-south-1.amazonaws.com/transactions",
+         {
+           method: "PUT",
+           headers: {
+             "Content-Type": "application/json",
+             "Allow-Control-Allow-Origin": "*",
+           },
+           body: JSON.stringify(newRow),
+         }
+       );
+
+       fetchData();
+
+    //    // Update the rows state after adding a new row
+    //    const updatedRows = [...rows, newRow];
+    //     setRows(updatedRows as never[]);
+    
+    
+     } else {
+       console.log("Coordinates already added!");
+     }
+   } catch (error) {
+     console.error("Error adding data:", error);
+   }
+ };
+
+
+ if (window.location.href.includes("?")) {
+    handleAdd();
+    // Remove the query parameters from the url
+    window.history.replaceState({}, "", "/plat-a-tree");
+ }
   const handleDelete = async (id: number) => {
     try {
       await fetch(
@@ -120,10 +204,10 @@ const Orders: React.FC = () => {
       );
 
       // Update the rows state after deletion
-    const [rows, setRows] = useState<any[]>([]); // Add type annotation for rows
+      const [rows, setRows] = useState<any[]>([]); // Add type annotation for rows
 
-    // Rest of the code...
-    //   setRows(updatedRows);
+      // Rest of the code...
+      //   setRows(updatedRows);
     } catch (error) {
       console.error("Error deleting data:", error);
     }
@@ -153,3 +237,4 @@ const Orders: React.FC = () => {
 };
 
 export default Orders;
+
