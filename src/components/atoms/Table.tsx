@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Card, CardContent, Typography, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { Modal } from "react-bootstrap";
 
 const Orders: React.FC = () => {
   const columns: GridColDef[] = [
@@ -38,8 +39,17 @@ const Orders: React.FC = () => {
       sortable: false,
       renderCell: (params: GridRenderCellParams) => (
         <>
-          <IconButton color="success" aria-label="edit">
-            <EditIcon />
+          <IconButton color="success" aria-label="edit" >
+            <EditIcon
+            // onclick open modal with form to update image
+            onClick={() => {
+                console.log("Modal opened");
+                // Open the modal
+                const [modalOpen, setModalOpen] = useState(false);
+                setModalOpen(true);
+              }
+            }
+            />
           </IconButton>
           <IconButton
             color="secondary"
@@ -185,12 +195,14 @@ const Orders: React.FC = () => {
    }
  };
 
-
- if (window.location.href.includes("?")) {
+//  check that url has all query parameters
+if(window.location.href.includes("?xlat") && window.location.href.includes("&ylon") && window.location.href.includes("&price")) {
+    // only call handleAdd if the url has all query parameters
     handleAdd();
     // Remove the query parameters from the url
-    window.history.replaceState({}, "", "/plat-a-tree");
+    window.history.replaceState({}, "", "/plant-a-tree");
  }
+
   const handleDelete = async (id: number) => {
     try {
       await fetch(
@@ -213,6 +225,9 @@ const Orders: React.FC = () => {
     }
   };
 
+//   handle add image and image type
+
+
   return (
     <div style={{ marginTop: 100, marginLeft: 50, marginRight: 50 }}>
       <Card>
@@ -232,6 +247,46 @@ const Orders: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+      {/* create a modal with a form to update an image */}
+      <Modal
+        show={false}
+        onHide={() => {
+          console.log("Modal closed");
+        }}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Upload Image to Plant Tree</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form>
+            <div className="mb-3">
+              <label htmlFor="image" className="form-label">
+                Image
+              </label>
+              <input
+                type="file"
+                className="form-control"
+                id="image"
+                name="image"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="imageType" className="form-label">
+                Image Type
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="imageType"
+                name="imageType"
+              />
+            </div>
+            <button type="submit" className="btn btn-primary">
+              Upload Image
+            </button>
+          </form>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

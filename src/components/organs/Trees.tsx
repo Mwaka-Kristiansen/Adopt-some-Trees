@@ -28,11 +28,11 @@ const Trees = () => {
     // check if the url has coordinates
   // only split the url if it has coordinates
   
-    const url = window.location.href;
-    const urlSplit = url.split("?");
-    const urlParams = urlSplit[1].split("&");
-    const urlLat = urlParams[0].split("=");
-    const urlLon = urlParams[1].split("=");
+const url = window.location.href;
+const urlSplit = url.split("?");
+const urlParams = urlSplit.length > 1 ? urlSplit[1].split("&") : [];
+const urlLat = urlParams.length > 0 ? urlParams[0].split("=") : [];
+const urlLon = urlParams.length > 1 ? urlParams[1].split("=") : [];
     
 
     // const navigate = useNavigate();
