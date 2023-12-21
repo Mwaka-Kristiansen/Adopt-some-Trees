@@ -9,9 +9,16 @@ import { v4 as uuidv4 } from "uuid";
 import { Card, CardContent, Typography, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { Modal } from "react-bootstrap";
+// import modal from material ui
+import Modal from '@mui/material/Modal';
+
 
 const Orders: React.FC = () => {
+
+  const [rows, setRows] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 70 },
     { field: "buyersName", headerName: "Buyers Name", width: 200 },
@@ -39,22 +46,16 @@ const Orders: React.FC = () => {
       sortable: false,
       renderCell: (params: GridRenderCellParams) => (
         <>
-          <IconButton color="success" aria-label="edit" >
-            <EditIcon
-            // onclick open modal with form to update image
-            onClick={() => {
-                console.log("Modal opened");
-                // Open the modal
-                const [modalOpen, setModalOpen] = useState(false);
-                setModalOpen(true);
-              }
-            }
-            />
+          <IconButton
+            color="success"
+            aria-label="edit"
+            onClick={() => handleEdit(params.row)}
+          >
+            <EditIcon />
           </IconButton>
           <IconButton
             color="secondary"
             aria-label="delete"
-            // You can call handleDelete with the row id
             onClick={() => handleDelete(params.row.id)}
           >
             <DeleteIcon />
@@ -63,8 +64,6 @@ const Orders: React.FC = () => {
       ),
     },
   ];
-
-  const [rows, setRows] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -226,7 +225,24 @@ if(window.location.href.includes("?xlat") && window.location.href.includes("&ylo
   };
 
 //   handle add image and image type
+const handleEdit = (row: any) => {
+  setSelectedRow(row);
+  setModalOpen(true);
+};
 
+const handleCloseModal = () => {
+  setModalOpen(false);
+};
+
+// const handleUpdateImage = (updatedImageData: any) => {
+//   // Perform logic to update image type and base64
+
+//   const updatedRows = rows.map((row) =>
+//     row.id === selectedRow.id ? { ...row, ...updatedImageData } : row
+//   );
+//   setRows(updatedRows);
+//   setModalOpen(false);
+// };
 
   return (
     <div style={{ marginTop: 100, marginLeft: 50, marginRight: 50 }}>
@@ -249,43 +265,65 @@ if(window.location.href.includes("?xlat") && window.location.href.includes("&ylo
       </Card>
       {/* create a modal with a form to update an image */}
       <Modal
-        show={false}
-        onHide={() => {
-          console.log("Modal closed");
-        }}
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
       >
-        <Modal.Header closeButton>
-          <Modal.Title>Upload Image to Plant Tree</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form>
-            <div className="mb-3">
-              <label htmlFor="image" className="form-label">
-                Image
-              </label>
-              <input
-                type="file"
-                className="form-control"
-                id="image"
-                name="image"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="imageType" className="form-label">
-                Image Type
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="imageType"
-                name="imageType"
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">
-              Upload Image
-            </button>
-          </form>
-        </Modal.Body>
+        <div className="flex justify-center items-center h-screen">
+          <div className="bg-white w-96 rounded shadow-lg p-6">
+            <h1 className="text-2xl font-semibold mb-4">Plant Tree</h1>
+            {/* image form */}
+            <form>
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="imageType"
+                >
+                  Image Type
+                </label>
+                {/* text field */}
+                <input
+                  type="text"
+                  id="imageType"
+                  name="imageType"
+                  className="w-full border border-gray-300 px-3 py-2 rounded outline-none focus:ring-2 focus:ring-blue-600"
+                />
+
+              </div>
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="image"
+                >
+                  Image
+                </label>
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  className="w-full border border-gray-300 px-3 py-2 rounded outline-none focus:ring-2 focus:ring-blue-600"
+                />
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className="bg-red-600 text-white px-4 py-2 rounded"
+                  onClick={handleCloseModal}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-green-600 text-white px-4 py-2 rounded ml-2"
+                >
+                  Plant Tree
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
       </Modal>
     </div>
   );
