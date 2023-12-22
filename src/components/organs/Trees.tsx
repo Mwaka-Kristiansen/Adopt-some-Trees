@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Text } from "../atoms/Text";
 import { TreesTexts } from "../particles/DataLists";
 import { Card } from "../molecules/Card";
@@ -16,7 +15,7 @@ import Tree11 from "../../assets/Red-Stinkwood.jpeg";
 import Tree12 from "../../assets/Yellowwood.jpeg";
 import { Button } from "../atoms/Button";
 // import PaymentModal from "../organs/Payment";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Trees = () => {
     // const [isPaymentModalOpen, setPaymentModalOpen] = useState(false);

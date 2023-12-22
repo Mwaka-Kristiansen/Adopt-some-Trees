@@ -213,7 +213,8 @@ const Orders: React.FC = () => {
       );
 
       // Update the rows state after deletion
-      const [rows, setRows] = useState<any[]>([]); // Add type annotation for rows
+      // const [rows, setRows] = useState<any[]>([]); 
+      // Add type annotation for rows
 
       // Rest of the code...
       //   setRows(updatedRows);
