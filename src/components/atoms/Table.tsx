@@ -12,7 +12,6 @@ import Modal from "@mui/material/Modal";
 import swal from 'sweetalert2';
 
 
-
 const Orders: React.FC = () => {
   const [rows, setRows] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -117,6 +116,7 @@ const Orders: React.FC = () => {
 
       setRows(rowsWithIds);
       setSelectedRow(rowsWithIds[0]);
+      
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -236,7 +236,7 @@ const Orders: React.FC = () => {
         return new Promise<string>((resolve, reject) => {
           const reader = new FileReader();
           reader.readAsDataURL(file);
-          reader.onload = () => resolve(reader.result as string);
+          reader.onload = () => resolve(reader.result?.toString().split(',')[1] as string);
           reader.onerror = (error) => reject(error);
         });
       };
