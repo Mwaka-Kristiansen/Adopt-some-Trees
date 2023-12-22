@@ -2,18 +2,16 @@ import React, { useState, useEffect } from "react";
 import {
   DataGrid,
   GridColDef,
-  GridRenderCellParams,
-  GridTreeNodeWithRender,
+  GridRenderCellParams
 } from "@mui/x-data-grid";
 import { v4 as uuidv4 } from "uuid";
 import { Card, CardContent, Typography, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-// import modal from material ui
 import Modal from "@mui/material/Modal";
-import { get } from "react-scroll/modules/mixins/scroller";
-// import FileBase64 from "react-file-base64";
-// import toBase64 from 'image-to-base64';
+import swal from 'sweetalert2';
+
+
 
 const Orders: React.FC = () => {
   const [rows, setRows] = useState([]);
@@ -29,7 +27,7 @@ const Orders: React.FC = () => {
     { field: "ylat", headerName: "Y Latitude", width: 100 },
     { field: "xlon", headerName: "X Longitude", width: 100 },
     { field: "ylon", headerName: "Y Longitude", width: 100 },
-    { field: "buyerId", headerName: "Buyer ID", width: 100},
+   
     {
       field: "status",
       headerName: "Status",
@@ -96,17 +94,16 @@ const Orders: React.FC = () => {
         ylat: row.y_lat,
         xlon: row.x_lon,
         ylon: row.y_lon,
-        // HIDE BUYER ID
         buyerId: row.buyerId, 
         status: (
           <span
             className={`px-2 py-1 rounded-full text-xs font-semibold ${
-              row.status === "active"
+              row.status === "planted"
                 ? "bg-green-100 text-green-800"
                 : "bg-red-100 text-red-800"
             }`}
           >
-            {row.status}
+            {row.status === "planted" ? "Planted" : "Pending"}
           </span>
         ),
         image: (
@@ -127,7 +124,6 @@ const Orders: React.FC = () => {
 
   const handleAdd = async () => {
     try {
-      // get data from url
       const url = window.location.href;
       const urlSplit = url.split("?");
       const urlParams = urlSplit[1].split("&");
@@ -140,7 +136,6 @@ const Orders: React.FC = () => {
 
       const newCoordinates = { x_lat: Number(xlat[1]), y_lon: Number(ylon[1]) };
 
-      // fetch data from the api and check if the coordinates already exist
       const response = await fetch(
         "https://i5cvhkou9b.execute-api.af-south-1.amazonaws.com/transactions",
         {
@@ -161,7 +156,6 @@ const Orders: React.FC = () => {
           coordinate.x_lat === newCoordinates.x_lat &&
           coordinate.y_lon === newCoordinates.y_lon
       );
-      // Add the data if the coordinates are unique
 
       if (!isCoordinatesUnique) {
         const newRow = {
@@ -173,8 +167,6 @@ const Orders: React.FC = () => {
           y_lon: Number(ylon[1]),
           buyerName: "B Sechaba",
           sellerId: uuidv4(),
-          // imageBase64: "",
-          // ImageType: "",
         };
         await fetch(
           "https://i5cvhkou9b.execute-api.af-south-1.amazonaws.com/transactions",
@@ -190,9 +182,6 @@ const Orders: React.FC = () => {
 
         fetchData();
 
-        //    // Update the rows state after adding a new row
-        //    const updatedRows = [...rows, newRow];
-        //     setRows(updatedRows as never[]);
       } else {
         console.log("Coordinates already added!");
       }
@@ -201,15 +190,12 @@ const Orders: React.FC = () => {
     }
   };
 
-  //  check that url has all query parameters
   if (
     window.location.href.includes("?xlat") &&
     window.location.href.includes("&ylon") &&
     window.location.href.includes("&price")
   ) {
-    // only call handleAdd if the url has all query parameters
     handleAdd();
-    // Remove the query parameters from the url
     window.history.replaceState({}, "", "/plant-a-tree");
   }
 
@@ -236,12 +222,11 @@ const Orders: React.FC = () => {
     }
   };
 
-  //   handle add image and image type
   const handleEdit = async (values: any) => {
     console.log('Values:', values);
   
     try {
-      // Function to convert png, jpg, jpeg image file to base64 using a FileReader
+    
       const toBase64 = (file: File | null) => {
         if (!file) {
           return Promise.reject(new Error('File is null or undefined'));
@@ -255,32 +240,26 @@ const Orders: React.FC = () => {
         });
       };
   
-      // Access buyerId from the selectedRow
-      const buyerId = selectedRow.buyerId;
-  
-      // Ensure that values.image is an array and has at least one element
+     
       if (!values.image || !Array.isArray(values.image) || values.image.length === 0) {
         throw new Error('Invalid image array');
       }
   
-      // Convert image to base64
       const imageBase64 = await toBase64(values.image[0]);
       console.log('Image base64:', imageBase64);
   
-      // Prefill the image type with the image type from the selected image
-      // Write a function that gets image type, i.e., jpg, from the image extension and prefills the image type field
-      // const imageType = values.image.name.split('.')[1]
   
       const dataToUpdate = {
         buyerId: selectedRow.buyerId,
         imageBase64: imageBase64,
         imageType: 'jpeg',
+        status: 'planted'
       };
   
       console.log('Selected row:', selectedRow);
       console.log('Data to update:', dataToUpdate);
   
-      // setChecking(true)
+  
       const response = await fetch(
         `https://i5cvhkou9b.execute-api.af-south-1.amazonaws.com/transactions`,
         {
@@ -295,14 +274,31 @@ const Orders: React.FC = () => {
   
       const data = await response.json();
       console.log('Success:', data);
-  
-      // Handle the response or update the state as needed
-      // alert('Image updated successfully')
-  
-      // setChecking(false)
+      // clear form
+      setSelectedRow({
+        ...selectedRow,
+        image: [],
+        imageType: ''
+      });
+      handleCloseModal();
+      fetchData();
+      swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Tree Planted successfully!',
+        confirmButtonText: 'Ok'
+      });
+
     } catch (error) {
       console.error('Error:', error);
-      // setChecking(false)
+      handleCloseModal();
+      swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+        confirmButtonText: 'Ok'
+      });
+
     }
   };
   
@@ -333,7 +329,6 @@ const Orders: React.FC = () => {
           </div>
         </CardContent>
       </Card>
-      {/* create a modal with a form to update an image */}
       <Modal
         open={isModalOpen}
         onClose={handleCloseModal}
@@ -343,7 +338,6 @@ const Orders: React.FC = () => {
         <div className="flex justify-center items-center h-screen">
           <div className="bg-white w-96 rounded shadow-lg p-6">
             <h1 className="text-2xl font-semibold mb-4">Plant Tree</h1>
-            {/* image form */}
             <form>
               <div className="mb-4">
                 <label
@@ -352,7 +346,6 @@ const Orders: React.FC = () => {
                 >
                   Image Type
                 </label>
-                {/* text field */}
                 <input
                   type="text"
                   id="imageType"
@@ -368,21 +361,21 @@ const Orders: React.FC = () => {
                   Image
                 </label>
                 <input
-    type="file"
-    id="image"
-    name="image"
-    className="w-full border border-gray-300 px-3 py-2 rounded outline-none focus:ring-2 focus:ring-blue-600"
-    required
-    onChange={(e) => {
-      const files = e.target.files;
-      if (files && files.length > 0) {
-        setSelectedRow({
-          ...selectedRow,
-          image: [files[0]], // Wrap the file in an array
-        });
-      }
-    }}
-  />
+                  type="file"
+                  id="image"
+                  name="image"
+                  className="w-full border border-gray-300 px-3 py-2 rounded outline-none focus:ring-2 focus:ring-blue-600"
+                  required
+                  onChange={(e) => {
+                    const files = e.target.files;
+                      if (files && files.length > 0) {
+                         setSelectedRow({
+                           ...selectedRow,
+                              image: [files[0]],
+                      });
+                       }
+                     }}
+                />
                 
               </div>
               <div className="flex justify-end">
@@ -396,8 +389,7 @@ const Orders: React.FC = () => {
                 <button
                   type="submit"
                   className="bg-green-600 text-white px-4 py-2 rounded ml-2"
-                  // onClick={() => handleEdit(selectedRow)}
-                  // dont refresh page when button is clicked
+                  
                   onClick={(e) => {
                     e.preventDefault();
                     handleEdit(selectedRow);
