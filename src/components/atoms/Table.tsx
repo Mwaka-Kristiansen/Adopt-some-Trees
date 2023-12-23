@@ -13,7 +13,7 @@ import swal from 'sweetalert2';
 
 
 const Orders: React.FC = () => {
-  const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState<{ buyerId: string; price: number; x_lat: number; y_lat: number; x_lon: number; y_lon: number; buyerName: string; sellerId: string; }[]>([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState<any>();
 
@@ -50,13 +50,7 @@ const Orders: React.FC = () => {
           <IconButton
             color="success"
             aria-label="edit"
-            onClick={() => 
-              // setSelectedRow(params.row),
-              setModalOpen(true)
-              // set buyer id
-              // setSelectedRow(params.row.buyerId)
-              
-            }
+            onClick={() => {setModalOpen(true), setSelectedRow(params.row)}}
           >
             <EditIcon />
           </IconButton>
@@ -120,9 +114,7 @@ const Orders: React.FC = () => {
       }));
 
       setRows(rowsWithIds);
-      setSelectedRow(
-        rowsWithIds.find((row: any) => row.buyerId === selectedRow.buyerId)
-      );
+      
       
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -187,7 +179,9 @@ const Orders: React.FC = () => {
           }
         );
 
-        fetchData();
+        // Update the rows state after adding
+       fetchData();
+
 
       } else {
         console.log("Coordinates already added!");
@@ -232,7 +226,8 @@ const Orders: React.FC = () => {
 
   const handleEdit = async (values: any) => {
     console.log('Values:', values);
-  
+    // setSelectedRow(rows)
+    // const selectedId = rows.find((row: any) => row.buyerId === values.buyerId);
     try {
     
       const toBase64 = (file: File | null) => {
@@ -257,7 +252,7 @@ const Orders: React.FC = () => {
       console.log('Image base64:', imageBase64);
 
       // get specific row selected
-      setSelectedRow(rows.find((row: any) => row.buyerId === selectedRow.buyerId));
+      // setSelectedRow(rows.find((row: any) => row.buyerId === selectedRow.buyerId));
 
   
       const dataToUpdate = {
@@ -286,11 +281,11 @@ const Orders: React.FC = () => {
       const data = await response.json();
       console.log('Success:', data);
       // clear form
-      setSelectedRow({
-        ...selectedRow,
-        image: [],
-        imageType: ''
-      });
+      // setSelectedRow({
+      //   ...selectedRow,
+      //   image: [],
+      //   imageType: ''
+      // });
       handleCloseModal();
       fetchData();
       swal.fire({
