@@ -17,7 +17,7 @@ import { Button } from "../atoms/Button";
 // import PaymentModal from "../organs/Payment";
 import { Link } from "react-router-dom";
 
-const Trees = () => {
+const Trees: React.FC = () => {
     // const [isPaymentModalOpen, setPaymentModalOpen] = useState(false);
     // const [selectedTree, setSelectedTree] = useState(null);
 
@@ -92,7 +92,7 @@ const urlLon = urlParams.length > 1 ? urlParams[1].split("=") : [];
   const renderDestinationLine = (destinations: any[]) => (
     <div className="w-full h-auto mt-4 flex gap-4">
       {destinations.map((card, index) => (
-        <div key={index} className="md:px-6 px-3">
+        <div key={index} className="md:px-6 px-10">
           <Card
             cardClass="overflow-hidden shadow-md rounded-lg cursor-pointer group"
             imageAlt={card.tree}
@@ -134,6 +134,7 @@ const urlLon = urlParams.length > 1 ? urlParams[1].split("=") : [];
   );
 
   return (
+    <div>
     <section className="w-full h-auto flex flex-col items-center justify-center relative lg:px-24 md:px-20 px-6 my-20">
       <Text
         as="p"
@@ -156,6 +157,7 @@ const urlLon = urlParams.length > 1 ? urlParams[1].split("=") : [];
       {/* Render the PaymentModal */}
       {/* <PaymentModal isOpen={isPaymentModalOpen} onClose={closePaymentModal} /> */}
     </section>
+    </div>
   );
 };
 

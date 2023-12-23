@@ -1,11 +1,12 @@
-import Trees from "../organs/Trees";
+import React from 'react';
+import Trees from '../organs/Trees';
 
-const BuyTree = () => {
+const BuyTrees: React.FC = () => {
   return (
-    <>
-      <Trees />
-    </>
+   <>
+   <Trees/>
+   </>
   );
 };
 
-export default BuyTree;
+export default BuyTrees;
