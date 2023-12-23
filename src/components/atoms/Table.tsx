@@ -7,9 +7,10 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { Card, CardContent, Typography, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import Modal from "@mui/material/Modal";
 import swal from 'sweetalert2';
+// import tree icon
+import {Tree} from '@phosphor-icons/react';
 
 
 const Orders: React.FC = () => {
@@ -19,14 +20,15 @@ const Orders: React.FC = () => {
 
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 70 },
+    { field: "id", headerName: "ID", width: 100 },
     { field: "treeName", headerName: "Tree Name", width: 200 },
-    { field: "price", headerName: "Price", width: 100 },
+    { field: "price", headerName: "Price", width: 140 },
     // { field: "xlat", headerName: "X Latitude", width: 100 },
     // { field: "ylat", headerName: "Y Latitude", width: 100 },
     // { field: "xlon", headerName: "X Longitude", width: 100 },
     // { field: "ylon", headerName: "Y Longitude", width: 100 },
-    // { field: "buyerId", headerName: "Buyer ID", width: 200},
+    // hide buyer id and don't display on table
+    { field: "buyerId", headerName: "Buyer ID", width: 50 },
    
     {
       field: "status",
@@ -36,24 +38,32 @@ const Orders: React.FC = () => {
     },
     {
       field: "image",
-      headerName: "Image",
-      width: 120,
+      headerName: "Tree Image",
+      width: 150,
       renderCell: (params: GridRenderCellParams) => params.value,
     },
     {
-      field: "actions",
-      headerName: "Actions",
-      width: 160,
+      field: "plant",
+      headerName: "Plant Tree",
+      width: 120,
       sortable: false,
       renderCell: (params: GridRenderCellParams) => (
-        <>
-          <IconButton
-            color="success"
-            aria-label="edit"
-            onClick={() => {setModalOpen(true), setSelectedRow(params.row)}}
-          >
-            <EditIcon />
-          </IconButton>
+       
+        <button className="bg-green-600 text-white px-4 py-2 rounded ml-2" onClick={() => {setModalOpen(true), setSelectedRow(params.row)}}>
+        <Tree size={15} color="currentColor" weight="fill" >Plant Tree</Tree></button>
+
+          
+         
+      ),
+    },
+    {
+      field: "delete",
+      headerName: "Delete",
+      width: 100,
+      sortable: false,
+      renderCell: (params: GridRenderCellParams) => (
+       
+          
           <IconButton
             color="secondary"
             aria-label="delete"
@@ -61,7 +71,6 @@ const Orders: React.FC = () => {
           >
             <DeleteIcon />
           </IconButton>
-        </>
       ),
     },
   ];
@@ -93,7 +102,8 @@ const Orders: React.FC = () => {
         xlon: row.x_lon,
         ylon: row.y_lon,
         treeName: row.treeName,
-        buyerId: row.buyerId, 
+        // hide buyer id and don't display on table
+        buyerId: row.buyerId,
         status: (
           <span
             className={`px-2 py-1 rounded-full text-xs font-semibold ${
@@ -167,7 +177,7 @@ const Orders: React.FC = () => {
           y_lat: Number(ylon[1]),
           x_lon: Number(xlat[1]),
           y_lon: Number(ylon[1]),
-          treeName: treeName[1],
+          treeName: treeName,
           buyerName: "B Sechaba",
           sellerId: uuidv4(),
         };
@@ -263,27 +273,30 @@ const Orders: React.FC = () => {
         return new Promise<string>((resolve, reject) => {
           const reader = new FileReader();
           reader.readAsDataURL(file);
-          reader.onload = () => resolve(reader.result?.toString().split(',')[1] as string);
+          reader.onload = () => resolve(reader.result as string);
+          // reader.onload = () => resolve(reader.result?.toString().split(',')[1] as string);
           reader.onerror = (error) => reject(error);
         });
       };
+
+      const base64string = await toBase64(values.image[0]);
+      const imageBase64 = base64string.split(',')[1];
+      const imageType = base64string.split(';')[0].split('/')[1];
+
   
      
       if (!values.image || !Array.isArray(values.image) || values.image.length === 0) {
         throw new Error('Invalid image array');
       }
   
-      const imageBase64 = await toBase64(values.image[0]);
+     
       console.log('Image base64:', imageBase64);
+      
 
-      // get specific row selected
-      // setSelectedRow(rows.find((row: any) => row.buyerId === selectedRow.buyerId));
-
-  
       const dataToUpdate = {
         buyerId: selectedRow.buyerId,
         imageBase64: imageBase64,
-        imageType: 'jpeg',
+        imageType: imageType,
         status: 'planted'
       };
   
@@ -305,12 +318,7 @@ const Orders: React.FC = () => {
   
       const data = await response.json();
       console.log('Success:', data);
-      // clear form
-      // setSelectedRow({
-      //   ...selectedRow,
-      //   image: [],
-      //   imageType: ''
-      // });
+
       handleCloseModal();
       fetchData();
       swal.fire({
@@ -370,26 +378,13 @@ const Orders: React.FC = () => {
           <div className="bg-white w-96 rounded shadow-lg p-6">
             <h1 className="text-2xl font-semibold mb-4">Plant Tree</h1>
             <form>
-              <div className="mb-4">
-                <label
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                  htmlFor="imageType"
-                >
-                  Image Type
-                </label>
-                <input
-                  type="text"
-                  id="imageType"
-                  name="imageType"
-                  className="w-full border border-gray-300 px-3 py-2 rounded outline-none focus:ring-2 focus:ring-blue-600"
-                />
-              </div>
+              
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
                   htmlFor="image"
                 >
-                  Image
+                Upload Planted Tree Image
                 </label>
                 <input
                   type="file"
