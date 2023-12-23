@@ -213,12 +213,15 @@ const Orders: React.FC = () => {
         }
       );
 
-      // Update the rows state after deletion
-      // const [rows, setRows] = useState<any[]>([]); 
-      // Add type annotation for rows
-
-      // Rest of the code...
-      //   setRows(updatedRows);
+      // Update the rows state after deleting
+      setRows(rows.filter((row) => row.buyerId !== selectedRow.buyerId));
+      swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Tree Deleted successfully!',
+        confirmButtonText: 'Ok'
+      });
+      
     } catch (error) {
       console.error("Error deleting data:", error);
     }
