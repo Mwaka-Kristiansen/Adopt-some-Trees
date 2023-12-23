@@ -5,7 +5,7 @@ import Logo from "../../assets/tree-logo.png"
 import { NavButtons, NavLinks } from "../particles/DataLists"
 import { List } from "../atoms/List";
 import { NavLink, useNavigate } from "react-router-dom";
-import { ArrowCircleRight } from "@phosphor-icons/react";
+import { ArrowCircleRight, CirclesFour } from "@phosphor-icons/react";
 import { Slide } from "react-awesome-reveal";
 
 
@@ -67,16 +67,16 @@ const NavBar = () => {
                             </List> */}
                         </ul>
                     </div>
-                    {/* <div className="lg:hidden flex gap-4 items-center">
-                        <select className="border-none outline-none font-light text-sm bg-transparent">
+                    <div className="lg:hidden flex gap-4 items-center">
+                        {/* <select className="border-none outline-none font-light text-sm bg-transparent">
                             <option value="EN" selected>EN</option>
                             <option value="ITA">ITA</option>
                             <option value="FRA">FRA</option>
-                        </select>
+                        </select> */}
                         <div className="hamburger text-gray-950 cursor-pointer" onClick={handleToggle}>
                             <CirclesFour size={30} color="currentColor" weight="fill" />
                         </div>
-                    </div> */}
+                    </div>
                 </nav>
             </Slide>
 
@@ -86,7 +86,7 @@ const NavBar = () => {
                 <div className={`w-[70%] h-screen bg-white flex flex-col justify-between items-center relative ${open ? "right-0" : "-right-[120vw]"} transition-all duration-500 ease-out delay-300`}>
                     <section className="w-full px-4 py-6 flex flex-col gap-16">
                         <div className="w-full flex justify-between items-center">
-                            <Image as="a" href="/" className="md:h-10 h-8" image={Logo} alt="Logo" />
+                            <Image as="a" href="/" className="md:h-12 h-12" image={Logo} alt="Logo" />
                             <div className="hamburger text-gray-950 cursor-pointer" onClick={handleToggle}>
                                 <ArrowCircleRight size={25} color="currentColor" weight="fill" />
                             </div>
