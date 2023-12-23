@@ -142,7 +142,9 @@ const Orders: React.FC = () => {
       const urlLon = urlParams[1].split("=");
       const ylon = urlLon[1].split(",");
       const urlTree = urlParams[2].split("=");
-      const treeName = urlTree[1].split(",");
+      // const treeName = urlTree[1].split(",");
+      // replace %20 with space
+     const treeName = urlTree[1].replace(/%20/g, " ");
       const urlPrice = urlParams[3].split("=");
       const price = urlPrice[1].split("Ksh");
 
