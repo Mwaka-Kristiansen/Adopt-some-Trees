@@ -17,16 +17,16 @@ export const NavLinks = [
   },
 ];
 
-export const NavButtons = [
-  {
-    name: "Login",
-    url: "/login",
-  },
-  {
-    name: "Signup",
-    url: "/signup",
-  },
-];
+// export const NavButtons = [
+//   {
+//     name: "Login",
+//     url: "/login",
+//   },
+//   {
+//     name: "Signup",
+//     url: "/signup",
+//   },
+// ];
 
 export const HeroTexts = {
   firstText: "ADOPT, BUY, PLANT TREES IN KENYA",
@@ -163,7 +163,7 @@ export const FooterTexts = {
     caption: "Quick Links",
     links: [
       {
-        name: "Adopt-a-Tree",
+        name: "Adopt aTree",
         url: "/adopt-a-tree",
       },
       {
@@ -171,8 +171,8 @@ export const FooterTexts = {
         url: "/buy-a-tree",
       },
       {
-        name: "Buy Trees",
-        url: "/buy-a-tree",
+        name: "Plant Trees",
+        url: "/plant-a-tree",
       },
       // {
       //   name: "Login",

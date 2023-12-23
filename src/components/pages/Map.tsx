@@ -21,7 +21,7 @@ const Map = () => {
     });
 
     // Add zoom controls
-    map.addControl(new mapboxgl.NavigationControl(), "top-right");
+    map.addControl(new mapboxgl.NavigationControl(), "top-left");
 
     // Add geocoder control for search
     const geocoder = new MapboxGeocoder({
@@ -34,7 +34,7 @@ const Map = () => {
     });
 
     // Ensure the geocoder control is added to the map
-    map.addControl(geocoder, "top-left");
+    map.addControl(geocoder, "top-right");
 
     // Add a simple marker for demonstration
     new mapboxgl.Marker().setLngLat([36.8219, 1.2921]).addTo(map);
@@ -81,50 +81,6 @@ const Map = () => {
       }
     });
 
-
-    map.on("load", () => {
-      map.addSource("counties", {
-        type: "vector",
-        url: "mapbox://mapbox.kenya-counties",
-      });
-
-      map.addLayer({
-        id: "counties-fill",
-        type: "fill",
-        source: "counties",
-        "source-layer": "KenyaCounties-4w17y0",
-        paint: {
-          "fill-color": "#627BC1",
-          "fill-opacity": 0.5,
-        },
-      });
-
-      map.addLayer({
-        id: "counties-outline",
-        type: "line",
-        source: "counties",
-        "source-layer": "KenyaCounties-4w17y0",
-        paint: {
-          "line-color": "#627BC1",
-          "line-width": 2,
-        },
-      });
-
-      map.addLayer({
-        id: "counties-label",
-        type: "symbol",
-        source: "counties",
-        "source-layer": "KenyaCounties-4w17y0",
-        layout: {
-          "text-field": ["get", "COUNTY"],
-          "text-font": ["Open Sans Bold"],
-          "text-size": 12,
-        },
-        paint: {
-          "text-color": "#333",
-        },
-      });
-    });
 
     // Cleanup on unmount
     return () => map.remove();
