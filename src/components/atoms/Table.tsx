@@ -20,13 +20,13 @@ const Orders: React.FC = () => {
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 70 },
-    { field: "buyersName", headerName: "Buyers Name", width: 200 },
+    { field: "treeName", headerName: "Tree Name", width: 200 },
     { field: "price", headerName: "Price", width: 100 },
-    { field: "xlat", headerName: "X Latitude", width: 100 },
-    { field: "ylat", headerName: "Y Latitude", width: 100 },
-    { field: "xlon", headerName: "X Longitude", width: 100 },
-    { field: "ylon", headerName: "Y Longitude", width: 100 },
-    { field: "buyerId", headerName: "Buyer ID", width: 200},
+    // { field: "xlat", headerName: "X Latitude", width: 100 },
+    // { field: "ylat", headerName: "Y Latitude", width: 100 },
+    // { field: "xlon", headerName: "X Longitude", width: 100 },
+    // { field: "ylon", headerName: "Y Longitude", width: 100 },
+    // { field: "buyerId", headerName: "Buyer ID", width: 200},
    
     {
       field: "status",
@@ -92,6 +92,7 @@ const Orders: React.FC = () => {
         ylat: row.y_lat,
         xlon: row.x_lon,
         ylon: row.y_lon,
+        treeName: row.treeName,
         buyerId: row.buyerId, 
         status: (
           <span
@@ -130,7 +131,9 @@ const Orders: React.FC = () => {
       const xlat = urlLat[1].split(",");
       const urlLon = urlParams[1].split("=");
       const ylon = urlLon[1].split(",");
-      const urlPrice = urlParams[2].split("=");
+      const urlTree = urlParams[2].split("=");
+      const treeName = urlTree[1].split(",");
+      const urlPrice = urlParams[3].split("=");
       const price = urlPrice[1].split("Ksh");
 
       const newCoordinates = { x_lat: Number(xlat[1]), y_lon: Number(ylon[1]) };
@@ -164,6 +167,7 @@ const Orders: React.FC = () => {
           y_lat: Number(ylon[1]),
           x_lon: Number(xlat[1]),
           y_lon: Number(ylon[1]),
+          treeName: treeName[1],
           buyerName: "B Sechaba",
           sellerId: uuidv4(),
         };
@@ -179,9 +183,18 @@ const Orders: React.FC = () => {
           }
         );
 
-        // Update the rows state after adding
-       fetchData();
+        // modify state using unshift
+        const addedRow = [newRow, ...rows];
+        addedRow.unshift(newRow);
 
+        // update numbering
+        let i = 1;
+        addedRow.map((row) => {
+          return { ...row, id: i++ };
+        });
+
+        setRows(addedRow);
+        
 
       } else {
         console.log("Coordinates already added!");
@@ -194,9 +207,11 @@ const Orders: React.FC = () => {
   if (
     window.location.href.includes("?xlat") &&
     window.location.href.includes("&ylon") &&
+    window.location.href.includes("&tree") &&
     window.location.href.includes("&price")
   ) {
     handleAdd();
+    fetchData();
     window.history.replaceState({}, "", "/plant-a-tree");
   }
 
@@ -221,7 +236,14 @@ const Orders: React.FC = () => {
         text: 'Tree Deleted successfully!',
         confirmButtonText: 'Ok'
       });
-      
+
+      // update numbering
+      // let i = 1;
+      // rows.map((row) => {
+      //   return { ...row, id: i-- };
+      // });
+
+
     } catch (error) {
       console.error("Error deleting data:", error);
     }

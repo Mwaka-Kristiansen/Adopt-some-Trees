@@ -112,7 +112,7 @@ const urlLon = urlParams.length > 1 ? urlParams[1].split("=") : [];
             <div className="w-full flex items-center text-color3">
               <div className="w-full flex items-center text-color3">
                 <Link
-          to={`/plant-a-tree?xlat=${urlLat}&ylon=${urlLon}&price=${card.price}`}
+          to={`/plant-a-tree?xlat=${urlLat}&ylon=${urlLon}&tree=${card.tree}&price=${card.price}`}
         >
                 <Button
                   className="text-color3 bg-green-500 px-6 py-1 rounded-full"
