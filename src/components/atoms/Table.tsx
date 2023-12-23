@@ -26,6 +26,7 @@ const Orders: React.FC = () => {
     { field: "ylat", headerName: "Y Latitude", width: 100 },
     { field: "xlon", headerName: "X Longitude", width: 100 },
     { field: "ylon", headerName: "Y Longitude", width: 100 },
+    { field: "buyerId", headerName: "Buyer ID", width: 200},
    
     {
       field: "status",
@@ -50,7 +51,11 @@ const Orders: React.FC = () => {
             color="success"
             aria-label="edit"
             onClick={() => 
+              // setSelectedRow(params.row),
               setModalOpen(true)
+              // set buyer id
+              // setSelectedRow(params.row.buyerId)
+              
             }
           >
             <EditIcon />
@@ -115,7 +120,9 @@ const Orders: React.FC = () => {
       }));
 
       setRows(rowsWithIds);
-      setSelectedRow(rowsWithIds[0]);
+      setSelectedRow(
+        rowsWithIds.find((row: any) => row.buyerId === selectedRow.buyerId)
+      );
       
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -248,7 +255,10 @@ const Orders: React.FC = () => {
   
       const imageBase64 = await toBase64(values.image[0]);
       console.log('Image base64:', imageBase64);
-  
+
+      // get specific row selected
+      setSelectedRow(rows.find((row: any) => row.buyerId === selectedRow.buyerId));
+
   
       const dataToUpdate = {
         buyerId: selectedRow.buyerId,
