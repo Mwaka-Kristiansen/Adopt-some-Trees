@@ -9,12 +9,25 @@ import { Card, CardContent, Typography, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Modal from "@mui/material/Modal";
 import swal from 'sweetalert2';
-import {Tree} from '@phosphor-icons/react';
+import {Tree, TreePalm} from '@phosphor-icons/react';
+import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
 
 const Orders: React.FC = () => {
+
+  // function to display map on a modal
+
+
+
+  // put map on modal
+
+
   const [rows, setRows] = useState<{ buyerId: string; price: number; x_lat: number; y_lat: number; x_lon: number; y_lon: number; buyerName: string; sellerId: string; }[]>([]);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isMapModalOpen, setMapModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState<any>();
 
 
@@ -27,8 +40,8 @@ const Orders: React.FC = () => {
     // { field: "xlon", headerName: "X Longitude", width: 100 },
     // { field: "ylon", headerName: "Y Longitude", width: 100 },
     // hide buyer id and don't display on table
-    { field: "buyerId", headerName: "Buyer ID", width: 50 },
-   
+    // { field: "buyerId", headerName: "Buyer ID", width: 50 },
+
     {
       field: "status",
       headerName: "Status",
@@ -47,12 +60,35 @@ const Orders: React.FC = () => {
       width: 120,
       sortable: false,
       renderCell: (params: GridRenderCellParams) => (
-       
-        <button className="bg-green-600 text-white px-4 py-2 rounded ml-2" onClick={() => {setModalOpen(true), setSelectedRow(params.row)}}>
-        <Tree size={15} color="currentColor" weight="fill" >Plant Tree</Tree></button>
-
-          
-         
+        <button
+          className="bg-green-600 text-white px-4 py-2 rounded ml-2"
+          onClick={() => {
+            setModalOpen(true), setSelectedRow(params.row);
+          }}
+        >
+          <Tree size={15} color="currentColor" weight="fill">
+            Plant Tree
+          </Tree>
+        </button>
+      ),
+    },
+    {
+      field: "show",
+      headerName: "Show on Map",
+      width: 120,
+      sortable: false,
+      renderCell: (params: GridRenderCellParams) => (
+        <button
+          className="bg-green-600 text-white px-4 py-2 rounded ml-2"
+          onClick={() => {
+            // open map modal
+            setMapModalOpen(true), setSelectedRow(params.row);
+          }}
+        >
+          <TreePalm size={15} color="currentColor" weight="fill">
+            Plant Tree
+          </TreePalm>
+        </button>
       ),
     },
     {
@@ -61,15 +97,13 @@ const Orders: React.FC = () => {
       width: 100,
       sortable: false,
       renderCell: (params: GridRenderCellParams) => (
-       
-          
-          <IconButton
-            color="secondary"
-            aria-label="delete"
-            onClick={() => handleDelete(params.row.buyerId)}
-          >
-            <DeleteIcon />
-          </IconButton>
+        <IconButton
+          color="secondary"
+          aria-label="delete"
+          onClick={() => handleDelete(params.row.buyerId)}
+        >
+          <DeleteIcon />
+        </IconButton>
       ),
     },
   ];
@@ -340,11 +374,59 @@ const Orders: React.FC = () => {
     }
   };
   
-  
+    const MapContainer = () => {
+      useEffect(() => {
+        mapboxgl.accessToken =
+          "pk.eyJ1IjoidGVreXJleSIsImEiOiJja3NieGJqMHYwYmFoMndwZmN1b3l1N3g2In0.n0e_g3FQlcLUiuiwnDL9fw";
+
+        const map = new mapboxgl.Map({
+          container: "map",
+          style: "mapbox://styles/tekyrey/clpsk2qjk018g01pa0g0nhbfu",
+          center: [selectedRow.ylon, selectedRow.xlat], // Nairobi, Kenya
+          zoom: 7,
+        });
+
+        // Add zoom controls
+        map.addControl(new mapboxgl.NavigationControl(), "top-left");
+
+        // Add geocoder control for search
+        const geocoder = new MapboxGeocoder({
+          accessToken: mapboxgl.accessToken,
+          mapboxgl: mapboxgl,
+          placeholder: "Search for a location",
+          marker: false,
+          countries: "KE",
+          bbox: [33.501, -4.04, 41.899, 5.62], // Boundary for Kenya
+        });
+
+        // Ensure the geocoder control is added to the map
+        map.addControl(geocoder, "top-right");
+
+        // Add a simple marker for demonstration
+        new mapboxgl.Marker()
+          // .setLngLat([37.28805638699967, 2.261883815402115])
+          .setLngLat([selectedRow.ylat, selectedRow.xlat])
+          .addTo(map);
+
+        // add marker for selected tree coordinates
+        // new mapboxgl.Marker().setLngLat([selectedRow.x_lat, selectedRow.y_lon]).addTo(map);
+
+        
+
+        // Cleanup on unmount
+        return () => map.remove();
+      });
+
+      return <div id="map" style={{ height: "600px" }}></div>;
+    };
 
   const handleCloseModal = () => {
     setModalOpen(false);
   };
+
+  const handleCloseModalMap = () => {
+    setMapModalOpen(false);
+  }
 
 
 
@@ -377,13 +459,12 @@ const Orders: React.FC = () => {
           <div className="bg-white w-96 rounded shadow-lg p-6">
             <h1 className="text-2xl font-semibold mb-4">Plant Tree</h1>
             <form>
-              
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
                   htmlFor="image"
                 >
-                Upload Planted Tree Image
+                  Upload Planted Tree Image
                 </label>
                 <input
                   type="file"
@@ -393,15 +474,14 @@ const Orders: React.FC = () => {
                   required
                   onChange={(e) => {
                     const files = e.target.files;
-                      if (files && files.length > 0) {
-                         setSelectedRow({
-                           ...selectedRow,
-                              image: [files[0]],
+                    if (files && files.length > 0) {
+                      setSelectedRow({
+                        ...selectedRow,
+                        image: [files[0]],
                       });
-                       }
-                     }}
+                    }
+                  }}
                 />
-                
               </div>
               <div className="flex justify-end">
                 <button
@@ -414,7 +494,6 @@ const Orders: React.FC = () => {
                 <button
                   type="submit"
                   className="bg-green-600 text-white px-4 py-2 rounded ml-2"
-                  
                   onClick={(e) => {
                     e.preventDefault();
                     handleEdit(selectedRow);
@@ -424,6 +503,23 @@ const Orders: React.FC = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      </Modal>
+      {/* Map modal */}
+      <Modal
+        open={isMapModalOpen}
+        onClose={handleCloseModalMap}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        // add close icon on top right
+        closeAfterTransition
+      >
+        <div className="flex justify-center items-center ">
+          <div className="bg-white w-1/2 h-40 rounded shadow-lg m-8">
+            {/* <div className="bg-white w-96 h-80 rounded shadow-lg p-6"> */}
+            {/* <h1 className="text-2xl font-semibold mb-4">Map</h1> */}
+            <MapContainer />
           </div>
         </div>
       </Modal>
